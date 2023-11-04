@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<!-- 提交歌曲表单 -->
+
+<table>
+    <tr>
+        <td style="width: 50%;">
+            <a href="{{ url_for('search_music') }}">返回搜索页面</a><br><br>
+            关键词：{{ keyword }}<br>
+            搜索结果共 {{ musics|length }} 条<br><br>
+        </td>
+        <td style="width: 50%;">
+            <form method="POST">
+                <table>
+                    <tr>
+                        <td>歌曲名</td>
+                        <td><input type="text" name="music_name" required></td>
+                    </tr>
+                    <tr>
+                        <td>艺术家</td>
+                        <td><input type="text" name="artist" required></td>
+                    </tr>
+                    <tr>
+                        <td>相关链接</td>
+                        <td><input type="text" name="link"></td>
+                    </tr>
+                    <tr>
+                        <td><input class="btn" type="submit" name="submit" value="提交歌曲"></td>
+                    </tr>
+                </table>
+            </form>
+        </td>
+    </tr>
+</table>
+<!-- 搜索结果展示 -->
+<ul class="list">
+    {% for music in musics %}
+    <li>
+        {{ music.music_name }} - {{ music.artist }}
+        <span class="float-right">
+            <a class="btn" href="{{ url_for('music_detail', index=music.index) }}">详情</a>
+            <a class="btn" href="{{ music.link }}">相关链接</a>
+        </span>
+    </li>
+    {% endfor %}
+</ul>
+
+{% endblock %}

@@ -1,0 +1,20 @@
+# Python bytecode
+*.pyc
+
+# Logs
+*.log
+
+# Virtualenv
+.env/
+
+# Build
+build/
+dist/
+__pycache__/
+
+# IDE
+.vscode/
+.idea/
+
+# Database
+data.db

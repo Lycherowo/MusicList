@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<strong>{{ info }}</strong>
+<br><br>
+<!-- 浏览帖子 -->
+<div class="pagination">
+    <!-- 上一页 -->
+    {% if comments.has_prev %}
+        <a href="?page={{ comments.prev_num }}">上一页</a>
+    {% else %}
+        上一页
+    {% endif %}
+    <!-- 中间页码 -->
+    {% for page_num in comments.iter_pages() %}
+        {% if page_num %}
+            {% if comments.page == page_num %}
+                <strong>{{ page_num }}</strong>
+            {% else %}
+                {% if comments.page - page_num > -5 and page_num - comments.page > -5 %}
+                    <a href="?page={{ page_num }}">{{ page_num }}</a>
+                {% endif %}
+            {% endif %}
+        {% endif %}
+    {% endfor %}
+    <!-- 下一页 -->
+    {% if comments.has_next %}
+        <a href="?page={{ comments.next_num }}">下一页</a>
+    {% else %}
+        下一页
+    {% endif %}
+</div>
+<ul class="list">
+    {% for comment in comments.items %}
+    <li>
+        <strong>{{ comment.text }}</strong>
+        <br>原帖：{{ comment.title }}
+        <span class="float-right">
+            <a class="btn" href="{{ url_for('message_detail', message_index=comment.parent_massage) }}">查看</a>
+        </span>
+        <br>{{ comment.time.strftime("%Y-%m-%d %H:%M") }} - {{ comment.username }}
+    </li>
+    {% endfor %}
+</ul>
+{% endblock %}

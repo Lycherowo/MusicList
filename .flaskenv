@@ -1,0 +1,2 @@
+FLASK_APP=MusicList
+FLASK_ENV=development

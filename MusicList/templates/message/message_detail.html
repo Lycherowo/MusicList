@@ -1,0 +1,96 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<style>
+    textarea {
+        font-family: Arial, Helvetica, sans-serif;
+        font-size: 16px;
+        height: 80px;
+        width: 100%;
+    }
+</style>
+
+<!-- 主消息 -->
+
+<span class="float-right">
+    {% if favorite %}
+    <a class="btn" href="{{ url_for('favorite_message', message_index=message.index, user_index=current_user.index) }}">取消点赞</a>
+    {% else %}
+    <a class="btn" href="{{ url_for('favorite_message', message_index=message.index, user_index=current_user.index) }}">点赞消息</a>
+    {% endif %}
+    {% if current_user.index == message.owner %}
+    <a class="btn" href="{{ url_for('delete_message', message_index=message.index) }}">删除消息</a>
+    {% endif %}
+</span>
+
+
+<strong>{{ message.title }}</strong><br>
+{{ message.text|safe }}
+<br><br>{{ message.time.strftime("%Y-%m-%d %H:%M") }} {{ user.username }}
+
+<!-- 相关歌曲 -->
+<br><br><br><br>
+{% if music_list %}
+    <strong>关联歌单</strong>
+    <ul class="list">
+        <li>
+            <span class="float-right">
+                <a href=" {{ url_for('user_list_detail', list_index=music_list.index) }}" class="btn">查看详情</a>
+            </span>
+            {{ music_list.list_name }}
+        </li>
+    </ul>
+{% endif %}
+
+
+<!-- 评论分页 -->
+<br><br>
+<strong>评论</strong>
+<form method="post">
+    <textarea name="text" rows="4" cols="40" required></textarea>
+    <input type="hidden" name="message_index" value="{{ message.index }}">
+    <input class="btn" type="submit" name="submit" value="提交">
+</form>
+<div class="pagination">
+    <!-- 上一页 -->
+    {% if comments.has_prev %}
+        <a href="?page={{ comments.prev_num }}">上一页</a>
+    {% else %}
+        上一页
+    {% endif %}
+    <!-- 中间页码 -->
+    {% for page_num in comments.iter_pages() %}
+        {% if page_num %}
+            {% if comments.page == page_num %}
+                <strong>{{ page_num }}</strong>
+            {% else %}
+                {% if comments.page - page_num > -5 and page_num - comments.page > -5 %}
+                    <a href="?page={{ page_num }}">{{ page_num }}</a>
+                {% endif %}
+            {% endif %}
+        {% endif %}
+    {% endfor %}
+    <!-- 下一页 -->
+    {% if comments.has_next %}
+        <a href="?page={{ comments.next_num }}">下一页</a>
+    {% else %}
+        下一页
+    {% endif %}
+</div>
+
+<!-- 评论 -->
+<ul class="list">
+    {% for comment in comments.items %}
+    <li>
+        <span class="float-right">
+            <a class="btn" href="{{ url_for('other_user_info', user_index=comment.owner) }}">查看用户</a>
+            {% if comment.owner == current_user.index %}
+            <a class="btn" href="{{ url_for('delete_comment', comment_index=comment.index) }}">删除评论</a>
+            {% endif %}
+        </span>
+        {{ comment.text }}<br>
+        {{ comment.time.strftime("%Y-%m-%d %H:%M") }} {{ comment.username }}
+    </li>
+    {% endfor %}
+</ul>
+{% endblock %}

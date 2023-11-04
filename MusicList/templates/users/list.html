@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<p>{{ musics|length }} Titles</p>
+
+<ul class="music-list">
+    {% for music in musics %}
+    <li>
+        {{ music.title }} - {{ music.producer }}
+        <span class="float-right">
+            <a class="imdb" href="{{ music.title }}" target="_blank" title="URL">URL</a>
+            {% if current_user.is_authenticated %}
+            {% if current_user.name == "Admin" %}
+            <a class="btn" href="{{ url_for('edit', music_id=music.id) }}">Edit</a>
+            <form class="inline-form" method="post" action="{{ url_for('delete', music_id=music.id) }}">
+                <input class="btn" type="submit" name="delete" value="Delete" onclick="return confirm('Remove')">
+            </form>
+            {% endif %}
+            {% endif %}
+        </span>
+    </li>
+    {% endfor %}
+</ul>
+<img alt="A Little Cat" class="cat" src="{{ url_for('static', filename='images/cat.gif') }}">
+{% endblock %}

@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<table>
+    <tr>
+        <td>列表名：</td>
+        <td>{{ list.list_name }}</td>
+    </tr>
+    <tr>
+        <td>私密性：</td>
+        <td>{% if list.share == 0 %}私密{% endif %}{% if list.share == 1 %}公开{% endif %}</td>       
+    </tr>
+    <tr>
+        <td>歌曲数：</td>
+        <td>{{ musics|length }}</td>
+    </tr>
+    <tr>
+        <td>更改列表名</td>
+        <td>
+            <form method="POST">
+                <input type="text" name="list_name">
+                <input type="hidden" name="list_index" value="{{ list.index }}">
+                <input class="btn" type="submit" name="submit" value="确认">
+            </form>
+        </td>
+    </tr>
+    <tr>
+        <td>更改私密性</td>
+        <td><a href="{{ url_for('change_privacy', list_index=list.index) }}" class="btn">更改私密性</a></td>
+    </tr>
+    <tr>
+        <td>删除列表</td>
+        <td><a href="{{ url_for('delete_list', list_index=list.index) }}" class="btn">删除列表</a></td>
+    </tr>
+    
+</table>
+<ul class="list">
+    {% for music in musics %}
+    <li>
+        {{ music.music_name }} - {{ music.artist }}
+        <span class="float-right">
+            <a class="btn" href="{{ music.link }}">相关链接</a>
+            <a class="btn" href="{{ url_for('delete_music_from_list', music_index=music.index, list_index=list.index) }}">删除歌曲</a>
+        </span>
+    </li>
+    {% endfor %}
+</ul>
+{% endblock %}

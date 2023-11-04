@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<br><br>歌单数：{{ lists|length }}<br><br>
+<ul class="list">  
+    {% for list in lists %}
+    <li>
+        {{ list.list_name }}
+        <span class="float-right">
+            <a href=" {{ url_for('user_list_detail', list_index=list.index) }}" class="btn">查看详情</a>
+        </span>
+    </li>
+    {% endfor %}
+</ul>
+{% endblock %}

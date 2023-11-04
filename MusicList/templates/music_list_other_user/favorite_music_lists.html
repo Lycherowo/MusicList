@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<strong>{{ info }}</strong>
+<ul class="list">
+    {% for music_list in music_lists %}
+    <li>
+        <strong>{{ music_list.list_name }}</strong> - {{ music_list.username }}
+        <span class="float-right">
+            <a class="btn" href="{{ url_for('user_list_detail', list_index=music_list.index) }}">查看</a>
+        </span>
+    </li>
+    {% endfor %}
+</ul>
+{% endblock %}

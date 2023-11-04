@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<table>
+    <tr>
+        <td>列表名</td>
+        <td>{{ list.list_name }}</td>
+    </tr>
+    <tr>
+        <td>歌曲数</td>
+        <td>{{ musics|length }}</td>
+    </tr>
+    <tr>
+        {% if favorite %}
+        <td>已收藏歌单</td>
+        <td><a class="btn" href="{{ url_for('favorite_music_list', user_index=current_user.index, list_index=list.index) }}">取消收藏歌单</a></td>
+        {% else %}
+        <td>收藏歌单</td>
+        <td><a class="btn" href="{{ url_for('favorite_music_list', user_index=current_user.index, list_index=list.index) }}">收藏歌单</a></td>
+        {% endif %}
+    </tr>
+</table>
+<ul class="list">
+    {% for music in musics %}
+    <li>
+        {{ music.music_name }} - {{ music.artist }}
+        <span class="float-right">
+            <a class="btn" href="{{ music.link }}">相关链接</a>
+            <a class="btn" href="{{ url_for('delete_music_from_list', music_index=music.index, list_index=list.index) }}">删除歌曲</a>
+        </span>
+    </li>
+    {% endfor %}
+</ul>
+{% endblock %}

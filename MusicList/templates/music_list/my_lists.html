@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<form method="post">
+    <input type="text" name="list_name" required>
+    <input class="btn" type="submit" name="submit" value="新建歌单">
+</form>
+<br><br>歌单数：{{ lists|length }}<br><br>
+<ul class="list">  
+    {% for list in lists %}
+    <li>
+        {% if list.share == 0 %} [私密] {% endif %}
+        {% if list.share == 1 %} [公开] {% endif %}
+        {{ list.list_name }}
+        <span class="float-right">
+            <a href=" {{ url_for('delete_list', list_index=list.index) }}" class="btn">删除列表</a>
+            <a href=" {{ url_for('list_detail', list_index=list.index) }}" class="btn">查看详情</a>
+        </span>
+    </li>
+    {% endfor %}
+</ul>
+{% endblock %}

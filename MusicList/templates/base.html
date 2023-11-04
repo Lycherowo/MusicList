@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    {% block head %}
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Music List</title>
+    <link rel="icon" href="{{ url_for('static', filename='images/favicon.png') }}">
+    <link rel="stylesheet" href=" {{ url_for('static', filename='css/style.css') }}">
+    {% endblock %}
+</head>
+
+<body>
+    <!-- 提示信息 -->
+    {% for message in get_flashed_messages() %}
+    <div class="alert">{{ message }}</div>
+    {% endfor %}
+    <!-- 标题 -->
+    <h2>
+        <p>Music List</p>
+    </h2>
+    <!-- 导航栏 -->
+    <nav>
+        <ul>
+            <li><a href="{{ url_for('index') }}">主页</a></li>
+            {% if current_user.is_authenticated %}
+            <li><a href="{{ url_for('message_list') }}">最新消息</a></li>
+            <li><a href="{{ url_for('user_message', user_index=current_user.index) }}">我的消息</a></li>
+            <li><a href="{{ url_for('user_comment', user_index=current_user.index) }}">我的评论</a></li>
+            <li><a href="{{ url_for('favorite_message_list', user_index=current_user.index) }}">我的点赞</a></li>
+            <li><a href="{{ url_for('music_lists', user_index=current_user.index) }}">我的歌单</a></li>
+            <li><a href="{{ url_for('search_music') }}">搜索歌曲</a></li>
+            <li><a href="{{ url_for('favorite_music_lists', user_index=current_user.index) }}">我的收藏</a></li>
+            <li><a href="{{ url_for('user_info') }}">用户信息</a></li>
+            {% else %}
+            <li><a href="{{ url_for('login') }}">登录</a></li>
+            <li><a href="{{ url_for('register') }}">注册</a></li>
+            {% endif %}
+        </ul>
+    </nav>
+    <br>
+    <!-- 其他元素 -->
+    {% block content %}
+    {% endblock %}
+    <!-- 页脚 -->
+    <footer></footer>
+</body>
+
+
+</html>

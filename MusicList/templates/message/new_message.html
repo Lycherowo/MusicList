@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<style>
+    textarea {
+        font-family: Arial, Helvetica, sans-serif;
+        font-size: 16px;
+        height: 80px;
+        width: 100%;
+    }
+
+    .input {
+        width: 100%;
+        height: 20px;
+        font-family: Arial, Helvetica, sans-serif;
+        font-size: 16px;
+    }
+</style>
+
+<form method="post">
+    <!-- 标题和内容 -->
+    <strong>标题</strong><br>
+    <input class="input" type="text" name="title" required><br>
+    <strong>内容</strong><br>
+    <textarea name="text" rows="4" cols="40" required></textarea>
+    <!-- 选择关联的歌单 -->
+    <br><br>
+    <label for="list_index"><strong>关联歌单</strong></label>
+    （如果你的歌单没有列出来，请检查其是否已公开！）
+    <ul class="list">
+        <li>
+            <input type="radio" id="0" value="0" name="list_index">
+            <label for="0">不选择</label>
+        </li>
+        {% for list in lists %}
+        <li>
+            <input type="radio" id="{{ list.index }}" value="{{ list.index }}" name="list_index">
+            <label for="{{ list.index }}">
+                {{ list.list_name }}
+            </label>
+        </li>
+        {% endfor %}
+    </ul>
+    <input class="btn" type="submit" name="submit" value="提交">
+</form>
+
+{% endblock %}

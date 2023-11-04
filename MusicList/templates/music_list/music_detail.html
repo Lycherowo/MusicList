@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<table>
+    <tr>
+        <td>歌曲名</td>
+        <td>{{ music.music_name }}</td>
+    </tr>
+    <tr>
+        <td>艺术家</td>
+        <td>{{ music.artist }}</td>
+    </tr>
+    <tr>
+        <td>相关链接</td>
+        <td><a href="{{ music.link }}">{{ music.link }}</a></td>
+    </tr>
+</table>
+
+<ul class="list">  
+    {% for list in lists %}
+    <li>
+        {{ list.list_name }}
+        <span class="float-right">
+            <a class="btn" href="{{ url_for('add_music_to_list', music_id=music.index, list_id=list.index) }}">添加到歌单</a>
+        </span>
+    </li>
+    {% endfor %}
+</ul>
+{% endblock %}
